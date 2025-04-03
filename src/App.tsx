@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import { State, Action } from "./Types/gamestate";
 
 function App() {
   return (
