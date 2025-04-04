@@ -1,9 +1,5 @@
 import { State, Action } from "../Types/gamestate";
-import { WORDS } from "../CONSTANTS/text";
-const getRandomWord = () => {
-  const randomIndex = Math.floor(Math.random() * WORDS.length);
-  return WORDS[randomIndex];
-};
+import { getRandomWord } from "../helpers/getRandomWord";
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
