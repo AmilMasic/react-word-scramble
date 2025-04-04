@@ -1,26 +1,54 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useReducer } from "react";
 import "./App.css";
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="w-10" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { State } from "./Types/gamestate";
+import { reducer } from "./Reducer/reducer";
+function getInitialState(): State {
+  return { phase: "pre-game" };
 }
 
+function App() {
+  const [state, dispatch] = useReducer(reducer, null, getInitialState);
+
+  switch (state.phase) {
+    case "pre-game": {
+      return (
+        <button onClick={() => dispatch({ type: "start-game" })}>
+          Begin new game
+        </button>
+      );
+    }
+
+    case "in-game": {
+      return (
+        <div>
+          <div>Goal: {state.goal}</div>
+          <label>
+            Guess:
+            <input
+              type="text"
+              value={state.guess}
+              onChange={(ev) =>
+                dispatch({ type: "update-guess", newGuess: ev.target.value })
+              }
+            />
+          </label>
+        </div>
+      );
+    }
+
+    case "post-game": {
+      return (
+        <div>
+          <div>Nice game! You guessed {state.goal}</div>
+          <button onClick={() => dispatch({ type: "start-game" })}>
+            Begin new game
+          </button>
+        </div>
+      );
+    }
+  }
+
+  // This should never happen.
+  return null;
+}
 export default App;
