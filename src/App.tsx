@@ -5,11 +5,23 @@ import { State, Action } from "./Types/gamestate";
 function getInitialState(): State {
   return { phase: "pre-game" };
 }
+const WORDS = ["Coffee", "Tea", "Latte", "Americano", "Machiatto"] as const;
+type Word = (typeof WORDS)[number];
+const getRandomWord = () => {
+  const randomIndex = Math.floor(Math.random() * WORDS.length);
+  return WORDS[randomIndex];
+};
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "start-game": {
-      console.log("game started");
-      break;
+      if (state.phase === "in-game") {
+        return state;
+      }
+      return {
+        phase: "in-game",
+        goal: getRandomWord(),
+        guess: "",
+      };
     }
     case "update-guess": {
       console.log("updated guess");
