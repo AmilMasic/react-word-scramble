@@ -1,12 +1,11 @@
 import React, { useReducer } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import { WORDS } from "./CONSTANTS/text";
 import { State, Action } from "./Types/gamestate";
 function getInitialState(): State {
   return { phase: "pre-game" };
 }
-const WORDS = ["Coffee", "Tea", "Latte", "Americano", "Machiatto"] as const;
-type Word = (typeof WORDS)[number];
+
 const getRandomWord = () => {
   const randomIndex = Math.floor(Math.random() * WORDS.length);
   return WORDS[randomIndex];
