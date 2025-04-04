@@ -1,45 +1,9 @@
 import React, { useReducer } from "react";
 import "./App.css";
-import { WORDS } from "./CONSTANTS/text";
-import { State, Action } from "./Types/gamestate";
+import { State } from "./Types/gamestate";
+import { reducer } from "./Reducer/reducer";
 function getInitialState(): State {
   return { phase: "pre-game" };
-}
-
-const getRandomWord = () => {
-  const randomIndex = Math.floor(Math.random() * WORDS.length);
-  return WORDS[randomIndex];
-};
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "start-game": {
-      if (state.phase === "in-game") {
-        return state;
-      }
-      return {
-        phase: "in-game",
-        goal: getRandomWord(),
-        guess: "",
-      };
-    }
-    case "update-guess": {
-      if (state.phase !== "in-game") {
-        return state;
-      }
-      if (action.newGuess === state.goal) {
-        return {
-          phase: "post-game",
-          goal: state.goal,
-        };
-      }
-      return {
-        ...state,
-        guess: action.newGuess,
-      };
-    }
-  }
-
-  return state;
 }
 
 function App() {
