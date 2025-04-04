@@ -24,8 +24,19 @@ function reducer(state: State, action: Action): State {
       };
     }
     case "update-guess": {
-      console.log("updated guess");
-      break;
+      if (state.phase !== "in-game") {
+        return state;
+      }
+      if (action.newGuess === state.goal) {
+        return {
+          phase: "post-game",
+          goal: state.goal,
+        };
+      }
+      return {
+        ...state,
+        guess: action.newGuess,
+      };
     }
   }
 
