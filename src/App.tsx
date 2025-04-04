@@ -1,20 +1,47 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import "./App.css";
 import { State } from "./Types/gamestate";
 import { reducer } from "./Reducer/reducer";
 function getInitialState(): State {
-  return { phase: "pre-game" };
+  return {
+    phase: "pre-game",
+    wordPack: null,
+  };
 }
 
 function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState);
 
+  useEffect(() => {
+    fetch("fruits.txt")
+      .then((response) => response.text())
+      .then((text) => {
+        setTimeout(
+          () =>
+            dispatch({
+              type: "load-data",
+              wordPack: text
+                .split("\n")
+                .map((word) => word.toUpperCase().trim())
+                .filter(Boolean),
+            }),
+          3000
+        );
+      });
+  }, [dispatch]);
+
   switch (state.phase) {
     case "pre-game": {
+      if (state.wordPack === null) {
+        return <>Loading Data...</>;
+      }
       return (
-        <button onClick={() => dispatch({ type: "start-game" })}>
-          Begin new game
-        </button>
+        <>
+          <div>Fruit basked loaded with {state.wordPack.length} fruits!</div>
+          <button onClick={() => dispatch({ type: "start-game" })}>
+            Begin new game
+          </button>
+        </>
       );
     }
 
