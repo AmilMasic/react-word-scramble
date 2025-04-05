@@ -53,7 +53,7 @@ function App() {
             Guess:
             <input
               type="text"
-              value={state.guess}
+              value={state.guess.trim()}
               onChange={(ev) =>
                 dispatch({
                   type: "update-guess",
