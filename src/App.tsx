@@ -59,6 +59,11 @@ function App() {
               }
             />
           </label>
+          <div>
+            <button onClick={(e) => dispatch({ type: "end-game" })}>
+              End Game
+            </button>
+          </div>
         </div>
       );
     }

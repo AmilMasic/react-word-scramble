@@ -43,6 +43,16 @@ export function reducer(state: State, action: Action): State {
         guess: action.newGuess,
       };
     }
+    case "end-game": {
+      if (state.phase !== "in-game") {
+        return state;
+      }
+      return {
+        phase: "post-game",
+        goal: state.goal,
+        wordPack: state.wordPack,
+      };
+    }
   }
 
   return state;
