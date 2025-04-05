@@ -55,7 +55,10 @@ function App() {
               type="text"
               value={state.guess}
               onChange={(ev) =>
-                dispatch({ type: "update-guess", newGuess: ev.target.value })
+                dispatch({
+                  type: "update-guess",
+                  newGuess: ev.target.value.toUpperCase(),
+                })
               }
             />
           </label>
