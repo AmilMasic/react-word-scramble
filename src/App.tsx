@@ -28,7 +28,7 @@ function App() {
           3000
         );
       });
-  }, [dispatch]);
+  }, []);
 
   switch (state.phase) {
     case "pre-game": {
