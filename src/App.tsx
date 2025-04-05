@@ -37,7 +37,7 @@ function App() {
       }
       return (
         <>
-          <div>Fruit basked loaded with {state.wordPack.length} fruits!</div>
+          <div>Fruit basket loaded with {state.wordPack.length} fruits!</div>
           <button onClick={() => dispatch({ type: "start-game" })}>
             Begin new game
           </button>
