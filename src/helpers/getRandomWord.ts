@@ -1,5 +1,4 @@
-import { WORDS } from "../CONSTANTS/text";
-export const getRandomWord = () => {
-  const randomIndex = Math.floor(Math.random() * WORDS.length);
-  return WORDS[randomIndex];
+export const getRandomWord = (wordPack: readonly string[]) => {
+  const randomIndex = Math.floor(Math.random() * wordPack.length);
+  return wordPack[randomIndex];
 };
