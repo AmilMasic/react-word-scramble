@@ -22,6 +22,7 @@ export function reducer(state: State, action: Action): State {
       return {
         phase: "in-game",
         goal: getRandomWord(state.wordPack),
+        guessedWords: 0,
         guess: "",
         wordPack: state.wordPack,
       };
@@ -34,6 +35,7 @@ export function reducer(state: State, action: Action): State {
         return {
           phase: "in-game",
           goal: getRandomWord(state.wordPack),
+          guessedWords: state.guessedWords++,
           guess: "",
           wordPack: state.wordPack,
         };
@@ -49,7 +51,7 @@ export function reducer(state: State, action: Action): State {
       }
       return {
         phase: "post-game",
-        goal: state.goal,
+        guessedWords: state.guessedWords,
         wordPack: state.wordPack,
       };
     }

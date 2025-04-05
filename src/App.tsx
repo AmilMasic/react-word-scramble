@@ -74,7 +74,7 @@ function App() {
     case "post-game": {
       return (
         <div>
-          <div>Nice game! You guessed {state.goal}</div>
+          <div>Nice game! You guessed {state.guessedWords} words</div>
           <button onClick={() => dispatch({ type: "start-game" })}>
             Begin new game
           </button>
