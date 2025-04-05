@@ -53,12 +53,20 @@ function App() {
             Guess:
             <input
               type="text"
-              value={state.guess}
+              value={state.guess.trim()}
               onChange={(ev) =>
-                dispatch({ type: "update-guess", newGuess: ev.target.value })
+                dispatch({
+                  type: "update-guess",
+                  newGuess: ev.target.value.toUpperCase(),
+                })
               }
             />
           </label>
+          <div>
+            <button onClick={(e) => dispatch({ type: "end-game" })}>
+              End Game
+            </button>
+          </div>
         </div>
       );
     }
@@ -66,7 +74,7 @@ function App() {
     case "post-game": {
       return (
         <div>
-          <div>Nice game! You guessed {state.goal}</div>
+          <div>Nice game! You guessed {state.guessedWords} words</div>
           <button onClick={() => dispatch({ type: "start-game" })}>
             Begin new game
           </button>
