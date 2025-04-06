@@ -34,7 +34,7 @@ function App() {
     case "pre-game": {
       if (state.wordPack === null) {
         return (
-          <div className="flex flex-col m-10">
+          <div className="flex flex-col p-10 mx-auto w-1/2 bg-gray-200 h-screen">
             <div className="mx-auto text-xl">
               Plese wait while we are gathering fruits...
             </div>
@@ -42,12 +42,16 @@ function App() {
         );
       }
       return (
-        <div className="flex flex-col m-10">
+        <div className="flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2">
           <div className="mx-auto text-xl">
             Fruit basket loaded with {state.wordPack.length} fruits!
           </div>
-          <button onClick={() => dispatch({ type: "start-game" })}>
-            Begin new game
+          <button
+            className="my-5 mx-auto p-5 w-max bg-slate-200 rounded-md border border-1 border-gray-500 hover:bg-slate-300"
+            autoFocus
+            onClick={() => dispatch({ type: "start-game" })}
+          >
+            New Game
           </button>
         </div>
       );
