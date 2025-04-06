@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import "./App.css";
 import { State } from "./Types/gamestate";
 import { reducer } from "./Reducer/reducer";
+import Button from "./Button";
 function getInitialState(): State {
   return {
     phase: "pre-game",
@@ -30,6 +31,23 @@ function App() {
       });
   }, []);
 
+  const handleDispatchStartGame = () => {
+    return dispatch({ type: "start-game" });
+  };
+  const handleDispatchUpdateGuess = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch({
+      type: "update-guess",
+      newGuess: e.target.value.toUpperCase(),
+      skippedWord: "",
+    });
+  };
+
+  const handleDispathEndGame = () => {
+    return dispatch({ type: "end-game" });
+  };
+
   switch (state.phase) {
     case "pre-game": {
       if (state.wordPack === null) {
@@ -46,13 +64,11 @@ function App() {
           <div className="mx-auto text-xl">
             Fruit basket loaded with {state.wordPack.length} fruits!
           </div>
-          <button
-            className="my-5 mx-auto p-5 w-max bg-slate-200 rounded-md border border-1 border-gray-500 hover:bg-slate-300"
-            autoFocus
-            onClick={() => dispatch({ type: "start-game" })}
-          >
-            New Game
-          </button>
+          <Button
+            handleClick={handleDispatchStartGame}
+            label="New Game"
+            autofocus={true}
+          />
         </div>
       );
     }
@@ -68,31 +84,22 @@ function App() {
               type="text"
               autoFocus
               value={state.guess}
-              onChange={(ev) =>
-                dispatch({
-                  type: "update-guess",
-                  newGuess: ev.target.value.toUpperCase(),
-                  skippedWord: "",
-                })
-              }
+              onChange={(e) => handleDispatchUpdateGuess(e)}
             />
           </label>
           <div className="space-x-5">
-            <button
-              onClick={(e) =>
+            <Button
+              handleClick={() =>
                 dispatch({
                   type: "update-guess",
                   newGuess: "",
                   skippedWord: state.goal,
                 })
               }
-            >
-              Skip Word
-            </button>
+              label="Skip Word"
+            />
 
-            <button onClick={(e) => dispatch({ type: "end-game" })}>
-              End Game
-            </button>
+            <Button handleClick={handleDispathEndGame} label="End Game" />
           </div>
         </div>
       );
