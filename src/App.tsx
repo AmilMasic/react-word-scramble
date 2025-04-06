@@ -52,8 +52,9 @@ function App() {
           <label>
             Guess:
             <input
+              className="uppercase "
               type="text"
-              value={state.guess.trim()}
+              value={state.guess}
               onChange={(ev) =>
                 dispatch({
                   type: "update-guess",
