@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import "./App.css";
 import { State } from "./Types/gamestate";
 import { reducer } from "./Reducer/reducer";
@@ -12,6 +12,8 @@ function getInitialState(): State {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState);
+
+  const guessInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     fetch("fruits.txt")
@@ -48,6 +50,17 @@ function App() {
     return dispatch({ type: "end-game" });
   };
 
+  const handleSkipWord = () => {
+    if (state.phase === "in-game") {
+      dispatch({
+        type: "update-guess",
+        newGuess: "",
+        skippedWord: state.goal,
+      });
+      guessInputRef.current?.focus();
+    }
+  };
+
   switch (state.phase) {
     case "pre-game": {
       if (state.wordPack === null) {
@@ -82,22 +95,14 @@ function App() {
             <input
               className="uppercase rounded-md ml-2 bg-gray-300 p-2 "
               type="text"
+              ref={guessInputRef}
               autoFocus
               value={state.guess}
               onChange={(e) => handleDispatchUpdateGuess(e)}
             />
           </label>
           <div className="space-x-5">
-            <Button
-              handleClick={() =>
-                dispatch({
-                  type: "update-guess",
-                  newGuess: "",
-                  skippedWord: state.goal,
-                })
-              }
-              label="Skip Word"
-            />
+            <Button handleClick={handleSkipWord} label="Skip Word" />
 
             <Button handleClick={handleDispathEndGame} label="End Game" />
           </div>
