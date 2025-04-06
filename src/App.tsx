@@ -33,15 +33,23 @@ function App() {
   switch (state.phase) {
     case "pre-game": {
       if (state.wordPack === null) {
-        return <>Loading Data...</>;
+        return (
+          <div className="flex flex-col m-10">
+            <div className="mx-auto text-xl">
+              Plese wait while we are gathering fruits...
+            </div>
+          </div>
+        );
       }
       return (
-        <>
-          <div>Fruit basket loaded with {state.wordPack.length} fruits!</div>
+        <div className="flex flex-col m-10">
+          <div className="mx-auto text-xl">
+            Fruit basket loaded with {state.wordPack.length} fruits!
+          </div>
           <button onClick={() => dispatch({ type: "start-game" })}>
             Begin new game
           </button>
-        </>
+        </div>
       );
     }
 
