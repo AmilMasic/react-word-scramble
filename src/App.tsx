@@ -59,13 +59,14 @@ function App() {
 
     case "in-game": {
       return (
-        <div>
-          <div>Goal: {state.scrabmledGoal}</div>
-          <label>
-            Guess:
+        <div className="flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center ">
+          <div className="mt-2">Can you guess it? </div>
+          <div className="font-semibold my-5">{state.scrabmledGoal}</div>
+          <label className=" mb-5">
             <input
-              className="uppercase "
+              className="uppercase rounded-md ml-2 bg-gray-300 p-2 "
               type="text"
+              autoFocus
               value={state.guess}
               onChange={(ev) =>
                 dispatch({
@@ -76,7 +77,7 @@ function App() {
               }
             />
           </label>
-          <div>
+          <div className="space-x-5">
             <button
               onClick={(e) =>
                 dispatch({
@@ -88,8 +89,7 @@ function App() {
             >
               Skip Word
             </button>
-          </div>
-          <div>
+
             <button onClick={(e) => dispatch({ type: "end-game" })}>
               End Game
             </button>
