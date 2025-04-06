@@ -59,10 +59,24 @@ function App() {
                 dispatch({
                   type: "update-guess",
                   newGuess: ev.target.value.toUpperCase(),
+                  skippedWord: "",
                 })
               }
             />
           </label>
+          <div>
+            <button
+              onClick={(e) =>
+                dispatch({
+                  type: "update-guess",
+                  newGuess: "",
+                  skippedWord: state.goal,
+                })
+              }
+            >
+              Skip Word
+            </button>
+          </div>
           <div>
             <button onClick={(e) => dispatch({ type: "end-game" })}>
               End Game
@@ -75,7 +89,10 @@ function App() {
     case "post-game": {
       return (
         <div>
-          <div>Nice game! You guessed {state.guessedWords} words</div>
+          <div>
+            Nice game! You guessed {state.guessedWords} and skipped{" "}
+            {state.skippedWords} words.
+          </div>
           <button onClick={() => dispatch({ type: "start-game" })}>
             Begin new game
           </button>

@@ -29,7 +29,9 @@ export function reducer(state: State, action: Action): State {
         phase: "in-game",
         goal: goal,
         scrabmledGoal: scrabmledGoal,
+        skippedWord: "",
         guessedWords: 0,
+        skippedWords: 0,
         guess: "",
         wordPack: state.wordPack,
       };
@@ -44,10 +46,25 @@ export function reducer(state: State, action: Action): State {
         return {
           phase: "in-game",
           goal: goal,
+          skippedWord: "",
           scrabmledGoal: scrabmledGoal,
           guessedWords: state.guessedWords++,
+          skippedWords: state.skippedWords,
           guess: "",
           wordPack: state.wordPack,
+        };
+      }
+
+      if (action.skippedWord === state.goal) {
+        return {
+          phase: "in-game",
+          wordPack: state.wordPack,
+          goal: goal,
+          skippedWord: "",
+          scrabmledGoal: scrabmledGoal,
+          guessedWords: state.guessedWords,
+          skippedWords: state.skippedWords++,
+          guess: "",
         };
       }
       return {
@@ -62,6 +79,7 @@ export function reducer(state: State, action: Action): State {
       return {
         phase: "post-game",
         guessedWords: state.guessedWords,
+        skippedWords: state.skippedWords,
         wordPack: state.wordPack,
       };
     }
