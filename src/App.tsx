@@ -107,14 +107,16 @@ function App() {
 
     case "post-game": {
       return (
-        <div>
-          <div>
+        <div className=" flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center">
+          <div className="text-xl p-5">
             Nice game! You guessed {state.guessedWords} and skipped{" "}
             {state.skippedWords} words.
           </div>
-          <button onClick={() => dispatch({ type: "start-game" })}>
-            Begin new game
-          </button>
+          <Button
+            handleClick={handleDispatchStartGame}
+            label="New Game?"
+            autofocus={true}
+          />
         </div>
       );
     }
