@@ -48,7 +48,7 @@ function App() {
     case "in-game": {
       return (
         <div>
-          <div>Goal: {state.goal}</div>
+          <div>Goal: {state.scrabmledGoal}</div>
           <label>
             Guess:
             <input
