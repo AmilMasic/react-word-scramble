@@ -1,14 +1,8 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import "./App.css";
 import { State } from "./Types/gamestate";
-import { reducer } from "./Reducer/reducer";
+import { reducer, getInitialState } from "./Reducer/reducer";
 import Button from "./Button";
-function getInitialState(): State {
-  return {
-    phase: "pre-game",
-    wordPack: null,
-  };
-}
 
 function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState);

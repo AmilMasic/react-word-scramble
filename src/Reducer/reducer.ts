@@ -1,5 +1,11 @@
 import { State, Action } from "../Types/gamestate";
 import { getRandomWord } from "../helpers/getRandomWord";
+export function getInitialState(): State {
+  return {
+    phase: "pre-game",
+    wordPack: null,
+  };
+}
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
