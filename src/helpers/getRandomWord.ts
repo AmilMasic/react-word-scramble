@@ -9,7 +9,10 @@ const shuffleArray = (array: string[]) => {
 export const getRandomWord = (wordPack: readonly string[]) => {
   const randomIndex = Math.floor(Math.random() * wordPack.length);
   const word = wordPack[randomIndex];
-  const scrabmledGoal = shuffleArray(word.split("")).join("");
+  let scrabmledGoal = word;
+  while (scrabmledGoal === word) {
+    scrabmledGoal = shuffleArray(word.split("")).join("");
+  }
   return {
     goal: word,
     scrabmledGoal: scrabmledGoal,
