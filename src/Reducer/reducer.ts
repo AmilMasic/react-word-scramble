@@ -1,10 +1,6 @@
 import { State, Action } from "../Types/gamestate";
 import { getRandomWord } from "../helpers/getRandomWord";
 
-const scrambleWord = (word: string) => {
-  return word;
-};
-
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "load-data": {
