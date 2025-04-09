@@ -6,13 +6,27 @@ const shuffleArray = (array: string[]) => {
   }
   return newArray;
 };
-export const getRandomWord = (wordPack: readonly string[]) => {
+export const getRandomWord = (
+  wordPack: readonly string[],
+  bannedWords: readonly string[]
+) => {
   const randomIndex = Math.floor(Math.random() * wordPack.length);
   const word = wordPack[randomIndex];
   let scrabmledGoal = word;
-  while (scrabmledGoal === word) {
+  let isSafe = false;
+  let attempts = 0;
+  const maxAttempts = 10;
+
+  while ((!isSafe || scrabmledGoal === word) && attempts < maxAttempts) {
     scrabmledGoal = shuffleArray(word.split("")).join("");
+
+    isSafe = !bannedWords.some((banned) =>
+      scrabmledGoal.toUpperCase().includes(banned.toUpperCase())
+    );
+
+    attempts++;
   }
+
   return {
     goal: word,
     scrabmledGoal: scrabmledGoal,

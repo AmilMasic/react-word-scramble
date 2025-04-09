@@ -30,7 +30,10 @@ export function reducer(state: State, action: Action): State {
       if (state.bannedWords == null) {
         return state;
       }
-      const { goal, scrabmledGoal } = getRandomWord(state.wordPack);
+      const { goal, scrabmledGoal } = getRandomWord(
+        state.wordPack,
+        state.bannedWords
+      );
 
       return {
         phase: "in-game",
@@ -49,7 +52,10 @@ export function reducer(state: State, action: Action): State {
         return state;
       }
 
-      const { goal, scrabmledGoal } = getRandomWord(state.wordPack);
+      const { goal, scrabmledGoal } = getRandomWord(
+        state.wordPack,
+        state.bannedWords
+      );
       if (action.newGuess === state.goal) {
         return {
           phase: "in-game",
