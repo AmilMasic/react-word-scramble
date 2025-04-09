@@ -4,6 +4,7 @@ export function getInitialState(): State {
   return {
     phase: "pre-game",
     wordPack: null,
+    bannedWords: null,
   };
 }
 
@@ -16,6 +17,7 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         wordPack: action.wordPack,
+        bannedWords: action.bannedWords,
       };
     }
     case "start-game": {
@@ -23,6 +25,9 @@ export function reducer(state: State, action: Action): State {
         return state;
       }
       if (state.wordPack == null) {
+        return state;
+      }
+      if (state.bannedWords == null) {
         return state;
       }
       const { goal, scrabmledGoal } = getRandomWord(state.wordPack);
@@ -36,6 +41,7 @@ export function reducer(state: State, action: Action): State {
         skippedWords: 0,
         guess: "",
         wordPack: state.wordPack,
+        bannedWords: state.bannedWords,
       };
     }
     case "update-guess": {
@@ -54,6 +60,7 @@ export function reducer(state: State, action: Action): State {
           skippedWords: state.skippedWords,
           guess: "",
           wordPack: state.wordPack,
+          bannedWords: state.bannedWords,
         };
       }
 
@@ -61,6 +68,7 @@ export function reducer(state: State, action: Action): State {
         return {
           phase: "in-game",
           wordPack: state.wordPack,
+          bannedWords: state.bannedWords,
           goal: goal,
           skippedWord: "",
           scrabmledGoal: scrabmledGoal,
@@ -83,6 +91,7 @@ export function reducer(state: State, action: Action): State {
         guessedWords: state.guessedWords,
         skippedWords: state.skippedWords,
         wordPack: state.wordPack,
+        bannedWords: state.bannedWords,
       };
     }
   }
