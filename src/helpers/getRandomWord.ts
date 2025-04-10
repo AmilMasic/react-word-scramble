@@ -20,6 +20,7 @@ export const getRandomWord = (
   while ((!isSafe || scrabmledGoal === word) && attempts < maxAttempts) {
     scrabmledGoal = shuffleArray(word.split("")).join("");
 
+    // eslint-disable-next-line no-loop-func
     isSafe = !bannedWords.some((banned) =>
       scrabmledGoal.toUpperCase().includes(banned.toUpperCase())
     );
