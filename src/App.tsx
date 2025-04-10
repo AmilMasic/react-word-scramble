@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import "./App.css";
-import { State } from "./Types/gamestate";
+
 import { reducer, getInitialState } from "./Reducer/reducer";
 import Button from "./Button";
 
