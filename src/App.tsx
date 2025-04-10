@@ -1,71 +1,113 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import "./App.css";
 import { State } from "./Types/gamestate";
-import { reducer } from "./Reducer/reducer";
-function getInitialState(): State {
-  return {
-    phase: "pre-game",
-    wordPack: null,
-  };
-}
+import { reducer, getInitialState } from "./Reducer/reducer";
+import Button from "./Button";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState);
 
+  const guessInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
-    fetch("fruits.txt")
-      .then((response) => response.text())
-      .then((text) => {
-        setTimeout(
-          () =>
-            dispatch({
-              type: "load-data",
-              wordPack: text
-                .split("\n")
-                .map((word) => word.toUpperCase().trim())
-                .filter(Boolean),
-            }),
-          3000
-        );
+    Promise.all([
+      fetch("https://unpkg.com/naughty-words@1.2.0/en.json").then((res) =>
+        res.json()
+      ),
+      fetch("fruits.txt").then((res) => res.text()),
+    ]).then(([bannedWordsData, fruitsText]) => {
+      const normalizeWords = (words: unknown[]): string[] =>
+        words
+          .filter((word): word is string => typeof word === "string")
+          .map((word) => word.toUpperCase().trim())
+          .filter(Boolean);
+
+      const normalizedBannedWords = Array.isArray(bannedWordsData)
+        ? normalizeWords(bannedWordsData)
+        : normalizeWords(Object.values(bannedWordsData).flat());
+
+      dispatch({
+        type: "load-data",
+        wordPack: fruitsText
+          .split("\n")
+          .map((word) => word.toUpperCase().trim())
+          .filter(Boolean),
+        bannedWords: normalizedBannedWords,
       });
+    });
   }, []);
+  const handleDispatchStartGame = () => {
+    return dispatch({ type: "start-game" });
+  };
+  const handleDispatchUpdateGuess = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch({
+      type: "update-guess",
+      newGuess: e.target.value.toUpperCase(),
+      skippedWord: "",
+    });
+  };
+
+  const handleDispathEndGame = () => {
+    return dispatch({ type: "end-game" });
+  };
+
+  const handleSkipWord = () => {
+    if (state.phase === "in-game") {
+      dispatch({
+        type: "update-guess",
+        newGuess: "",
+        skippedWord: state.goal,
+      });
+      guessInputRef.current?.focus();
+    }
+  };
 
   switch (state.phase) {
     case "pre-game": {
       if (state.wordPack === null) {
-        return <>Loading Data...</>;
+        return (
+          <div className="flex flex-col p-10 mx-auto w-1/2 bg-gray-200 h-screen">
+            <div className="mx-auto text-xl">
+              Plese wait while we are gathering fruits...
+            </div>
+          </div>
+        );
       }
       return (
-        <>
-          <div>Fruit basket loaded with {state.wordPack.length} fruits!</div>
-          <button onClick={() => dispatch({ type: "start-game" })}>
-            Begin new game
-          </button>
-        </>
+        <div className="flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2">
+          <div className="mx-auto text-xl">
+            Fruit basket loaded with {state.wordPack.length} fruits!
+          </div>
+          <Button
+            handleClick={handleDispatchStartGame}
+            label="New Game"
+            autofocus={true}
+          />
+        </div>
       );
     }
 
     case "in-game": {
       return (
-        <div>
-          <div>Goal: {state.scrabmledGoal}</div>
-          <label>
-            Guess:
+        <div className="flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center ">
+          <div className="mt-2">Can you guess it? </div>
+          <div className="font-semibold my-5">{state.scrabmledGoal}</div>
+          <label className=" mb-5">
             <input
+              className="uppercase rounded-md ml-2 bg-gray-300 p-2 "
               type="text"
-              value={state.guess.trim()}
-              onChange={(ev) =>
-                dispatch({
-                  type: "update-guess",
-                  newGuess: ev.target.value.toUpperCase(),
-                })
-              }
+              ref={guessInputRef}
+              autoFocus
+              value={state.guess}
+              onChange={(e) => handleDispatchUpdateGuess(e)}
             />
           </label>
-          <div>
-            <button onClick={(e) => dispatch({ type: "end-game" })}>
-              End Game
-            </button>
+          <div className="space-x-5">
+            <Button handleClick={handleSkipWord} label="Skip Word" />
+
+            <Button handleClick={handleDispathEndGame} label="End Game" />
           </div>
         </div>
       );
@@ -73,11 +115,16 @@ function App() {
 
     case "post-game": {
       return (
-        <div>
-          <div>Nice game! You guessed {state.guessedWords} words</div>
-          <button onClick={() => dispatch({ type: "start-game" })}>
-            Begin new game
-          </button>
+        <div className=" flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center">
+          <div className="text-xl p-5">
+            Nice game! You guessed {state.guessedWords} and skipped{" "}
+            {state.skippedWords} words.
+          </div>
+          <Button
+            handleClick={handleDispatchStartGame}
+            label="New Game?"
+            autofocus={true}
+          />
         </div>
       );
     }
