@@ -6,6 +6,7 @@ export type State =
   | {
       phase: "in-game";
       goal: string;
+      scrabmledGoal: string;
       guessedWords: number;
       guess: string;
       wordPack: readonly string[];
@@ -18,6 +19,7 @@ export type State =
   | {
       phase: "end-game";
       goal: string;
+      
       guessedWords: number;
       wordPack: readonly string[] | null;
     };
