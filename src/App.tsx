@@ -1,14 +1,8 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import "./App.css";
 import { State } from "./Types/gamestate";
-import { reducer } from "./Reducer/reducer";
+import { reducer, getInitialState } from "./Reducer/reducer";
 import Button from "./Button";
-function getInitialState(): State {
-  return {
-    phase: "pre-game",
-    wordPack: null,
-  };
-}
 
 function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState);
@@ -16,23 +10,32 @@ function App() {
   const guessInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    fetch("fruits.txt")
-      .then((response) => response.text())
-      .then((text) => {
-        setTimeout(
-          () =>
-            dispatch({
-              type: "load-data",
-              wordPack: text
-                .split("\n")
-                .map((word) => word.toUpperCase().trim())
-                .filter(Boolean),
-            }),
-          3000
-        );
-      });
-  }, []);
+    Promise.all([
+      fetch("https://unpkg.com/naughty-words@1.2.0/en.json").then((res) =>
+        res.json()
+      ),
+      fetch("fruits.txt").then((res) => res.text()),
+    ]).then(([bannedWordsData, fruitsText]) => {
+      const normalizeWords = (words: unknown[]): string[] =>
+        words
+          .filter((word): word is string => typeof word === "string")
+          .map((word) => word.toUpperCase().trim())
+          .filter(Boolean);
 
+      const normalizedBannedWords = Array.isArray(bannedWordsData)
+        ? normalizeWords(bannedWordsData)
+        : normalizeWords(Object.values(bannedWordsData).flat());
+
+      dispatch({
+        type: "load-data",
+        wordPack: fruitsText
+          .split("\n")
+          .map((word) => word.toUpperCase().trim())
+          .filter(Boolean),
+        bannedWords: normalizedBannedWords,
+      });
+    });
+  }, []);
   const handleDispatchStartGame = () => {
     return dispatch({ type: "start-game" });
   };
