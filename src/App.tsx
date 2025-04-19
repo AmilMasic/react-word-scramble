@@ -37,7 +37,7 @@ function App() {
     });
   }, []);
   const handleStartGame = () => {
-    return dispatch({ type: "start-game" });
+    dispatch({ type: "start-game" });
   };
   const handleUpdateGuess = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -48,7 +48,7 @@ function App() {
   };
 
   const handleEndGame = () => {
-    return dispatch({ type: "end-game" });
+    dispatch({ type: "end-game" });
   };
 
   const handleSkipWord = () => {
