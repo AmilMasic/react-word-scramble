@@ -36,12 +36,10 @@ function App() {
       });
     });
   }, []);
-  const handleDispatchStartGame = () => {
+  const handleStartGame = () => {
     return dispatch({ type: "start-game" });
   };
-  const handleDispatchUpdateGuess = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleUpdateGuess = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: "update-guess",
       newGuess: e.target.value.toUpperCase(),
@@ -49,7 +47,7 @@ function App() {
     });
   };
 
-  const handleDispathEndGame = () => {
+  const handleEndGame = () => {
     return dispatch({ type: "end-game" });
   };
 
@@ -81,7 +79,7 @@ function App() {
             Fruit basket loaded with {state.wordPack.length} fruits!
           </div>
           <Button
-            handleClick={handleDispatchStartGame}
+            handleClick={handleStartGame}
             label="New Game"
             autofocus={true}
           />
@@ -101,13 +99,13 @@ function App() {
               ref={guessInputRef}
               autoFocus
               value={state.guess}
-              onChange={(e) => handleDispatchUpdateGuess(e)}
+              onChange={(e) => handleUpdateGuess(e)}
             />
           </label>
           <div className="space-x-5">
             <Button handleClick={handleSkipWord} label="Skip Word" />
 
-            <Button handleClick={handleDispathEndGame} label="End Game" />
+            <Button handleClick={handleEndGame} label="End Game" />
           </div>
         </div>
       );
@@ -121,7 +119,7 @@ function App() {
             {state.skippedWords} words.
           </div>
           <Button
-            handleClick={handleDispatchStartGame}
+            handleClick={handleStartGame}
             label="New Game?"
             autofocus={true}
           />
