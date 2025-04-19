@@ -62,7 +62,7 @@ export function reducer(state: State, action: Action): State {
           goal: goal,
           skippedWord: "",
           scrabmledGoal: scrabmledGoal,
-          guessedWords: state.guessedWords++,
+          guessedWords: state.guessedWords + 1,
           skippedWords: state.skippedWords,
           guess: "",
           wordPack: state.wordPack,
@@ -93,7 +93,7 @@ export function reducer(state: State, action: Action): State {
           skippedWord: "",
           scrabmledGoal: scrabmledGoal,
           guessedWords: state.guessedWords,
-          skippedWords: state.skippedWords++,
+          skippedWords: state.skippedWords + 1,
           guess: "",
         };
       }
