@@ -7,7 +7,7 @@ export type State =
   | {
       phase: "in-game";
       goal: string;
-      scrabmledGoal: string;
+      scrambledGoal: string;
       skippedWord: string;
       guessedWords: number;
       skippedWords: number;

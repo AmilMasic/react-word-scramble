@@ -30,7 +30,7 @@ export function reducer(state: State, action: Action): State {
       if (state.bannedWords == null) {
         return state;
       }
-      const { goal, scrabmledGoal } = getRandomWord(
+      const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
         state.bannedWords
       );
@@ -38,7 +38,7 @@ export function reducer(state: State, action: Action): State {
       return {
         phase: "in-game",
         goal: goal,
-        scrabmledGoal: scrabmledGoal,
+        scrambledGoal: scrambledGoal,
         skippedWord: "",
         guessedWords: 0,
         skippedWords: 0,
@@ -52,7 +52,7 @@ export function reducer(state: State, action: Action): State {
         return state;
       }
 
-      const { goal, scrabmledGoal } = getRandomWord(
+      const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
         state.bannedWords
       );
@@ -61,7 +61,7 @@ export function reducer(state: State, action: Action): State {
           phase: "in-game",
           goal: goal,
           skippedWord: "",
-          scrabmledGoal: scrabmledGoal,
+          scrambledGoal: scrambledGoal,
           guessedWords: state.guessedWords + 1,
           skippedWords: state.skippedWords,
           guess: "",
@@ -79,7 +79,7 @@ export function reducer(state: State, action: Action): State {
       if (state.phase !== "in-game") {
         return state;
       }
-      const { goal, scrabmledGoal } = getRandomWord(
+      const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
         state.bannedWords
       );
@@ -91,7 +91,7 @@ export function reducer(state: State, action: Action): State {
           bannedWords: state.bannedWords,
           goal: goal,
           skippedWord: "",
-          scrabmledGoal: scrabmledGoal,
+          scrambledGoal: scrambledGoal,
           guessedWords: state.guessedWords,
           skippedWords: state.skippedWords + 1,
           guess: "",

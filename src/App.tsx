@@ -99,7 +99,7 @@ function App() {
       return (
         <div className="flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center ">
           <div className="mt-2">Can you guess it? </div>
-          <div className="font-semibold my-5">{state.scrabmledGoal}</div>
+          <div className="font-semibold my-5">{state.scrambledGoal}</div>
           <label className=" mb-5">
             <input
               className="uppercase rounded-md ml-2 bg-gray-300 p-2 "

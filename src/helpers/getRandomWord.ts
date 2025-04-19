@@ -12,17 +12,17 @@ export const getRandomWord = (
 ) => {
   const randomIndex = Math.floor(Math.random() * wordPack.length);
   const word = wordPack[randomIndex];
-  let scrabmledGoal = word;
+  let scrambledGoal = word;
   let isSafe = false;
   let attempts = 0;
   const maxAttempts = 10;
 
-  while ((!isSafe || scrabmledGoal === word) && attempts < maxAttempts) {
-    scrabmledGoal = shuffleArray(word.split("")).join("");
+  while ((!isSafe || scrambledGoal === word) && attempts < maxAttempts) {
+    scrambledGoal = shuffleArray(word.split("")).join("");
 
     // eslint-disable-next-line no-loop-func
     isSafe = !bannedWords.some((banned) =>
-      scrabmledGoal.toUpperCase().includes(banned.toUpperCase())
+      scrambledGoal.toUpperCase().includes(banned.toUpperCase())
     );
 
     attempts++;
@@ -30,6 +30,6 @@ export const getRandomWord = (
 
   return {
     goal: word,
-    scrabmledGoal: scrabmledGoal,
+    scrambledGoal: scrambledGoal,
   };
 };
