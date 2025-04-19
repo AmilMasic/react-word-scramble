@@ -36,28 +36,38 @@ function App() {
       });
     });
   }, []);
-  const handleDispatchStartGame = () => {
-    return dispatch({ type: "start-game" });
+  const handleStartGame = () => {
+    dispatch({ type: "start-game" });
   };
-  const handleDispatchUpdateGuess = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleUpdateGuess = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: "update-guess",
       newGuess: e.target.value.toUpperCase(),
-      skippedWord: "",
     });
   };
 
-  const handleDispathEndGame = () => {
-    return dispatch({ type: "end-game" });
+  const pluralize = (
+    word: string,
+    guessedWords: number,
+    skippedWords: number,
+    pluralForm: string | null
+  ) => {
+    const totalWords = guessedWords + skippedWords;
+    if (totalWords > 1) {
+      return pluralForm ? pluralForm : `${word}s`;
+    } else {
+      return word;
+    }
+  };
+
+  const handleEndGame = () => {
+    dispatch({ type: "end-game" });
   };
 
   const handleSkipWord = () => {
     if (state.phase === "in-game") {
       dispatch({
-        type: "update-guess",
-        newGuess: "",
+        type: "skip-guess",
         skippedWord: state.goal,
       });
       guessInputRef.current?.focus();
@@ -80,11 +90,7 @@ function App() {
           <div className="mx-auto text-xl">
             Fruit basket loaded with {state.wordPack.length} fruits!
           </div>
-          <Button
-            handleClick={handleDispatchStartGame}
-            label="New Game"
-            autofocus={true}
-          />
+          <Button onClick={handleStartGame} label="New Game" autofocus={true} />
         </div>
       );
     }
@@ -101,13 +107,13 @@ function App() {
               ref={guessInputRef}
               autoFocus
               value={state.guess}
-              onChange={(e) => handleDispatchUpdateGuess(e)}
+              onChange={handleUpdateGuess}
             />
           </label>
           <div className="space-x-5">
-            <Button handleClick={handleSkipWord} label="Skip Word" />
+            <Button onClick={handleSkipWord} label="Skip Word" />
 
-            <Button handleClick={handleDispathEndGame} label="End Game" />
+            <Button onClick={handleEndGame} label="End Game" />
           </div>
         </div>
       );
@@ -118,10 +124,11 @@ function App() {
         <div className=" flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center">
           <div className="text-xl p-5">
             Nice game! You guessed {state.guessedWords} and skipped{" "}
-            {state.skippedWords} words.
+            {state.skippedWords}{" "}
+            {pluralize("word", state.guessedWords, state.skippedWords, null)}.
           </div>
           <Button
-            handleClick={handleDispatchStartGame}
+            onClick={handleStartGame}
             label="New Game?"
             autofocus={true}
           />
