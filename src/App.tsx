@@ -47,6 +47,20 @@ function App() {
     });
   };
 
+  const pluralize = (
+    word: string,
+    guessedWords: number,
+    skippedWords: number,
+    pluralForm: string | null
+  ) => {
+    const totalWords = guessedWords + skippedWords;
+    if (totalWords > 1) {
+      return pluralForm ? pluralForm : `${word}s`;
+    } else {
+      return word;
+    }
+  };
+
   const handleEndGame = () => {
     dispatch({ type: "end-game" });
   };
@@ -112,7 +126,8 @@ function App() {
         <div className=" flex flex-col p-10 bg-gray-200 h-screen mx-auto w-1/2 items-center">
           <div className="text-xl p-5">
             Nice game! You guessed {state.guessedWords} and skipped{" "}
-            {state.skippedWords} words.
+            {state.skippedWords}{" "}
+            {pluralize("word", state.guessedWords, state.skippedWords, null)}.
           </div>
           <Button
             onClick={handleStartGame}
