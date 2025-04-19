@@ -95,7 +95,7 @@ function App() {
               ref={guessInputRef}
               autoFocus
               value={state.guess}
-              onChange={(e) => handleUpdateGuess(e)}
+              onChange={handleUpdateGuess}
             />
           </label>
           <div className="space-x-5">
