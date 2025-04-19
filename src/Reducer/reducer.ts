@@ -70,6 +70,20 @@ export function reducer(state: State, action: Action): State {
         };
       }
 
+      return {
+        ...state,
+        guess: action.newGuess,
+      };
+    }
+    case "skip-guess": {
+      if (state.phase !== "in-game") {
+        return state;
+      }
+      const { goal, scrabmledGoal } = getRandomWord(
+        state.wordPack,
+        state.bannedWords
+      );
+
       if (action.skippedWord === state.goal) {
         return {
           phase: "in-game",
@@ -85,7 +99,7 @@ export function reducer(state: State, action: Action): State {
       }
       return {
         ...state,
-        guess: action.newGuess,
+        skippedWord: action.skippedWord,
       };
     }
     case "end-game": {

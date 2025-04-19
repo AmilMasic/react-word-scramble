@@ -38,5 +38,6 @@ export type Action =
       wordPack: readonly string[];
       bannedWords: readonly string[];
     }
-  | { type: "update-guess"; newGuess: string; skippedWord: string }
+  | { type: "update-guess"; newGuess: string }
+  | { type: "skip-guess"; skippedWord: string }
   | { type: "end-game" };

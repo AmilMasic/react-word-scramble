@@ -43,7 +43,6 @@ function App() {
     dispatch({
       type: "update-guess",
       newGuess: e.target.value.toUpperCase(),
-      skippedWord: "",
     });
   };
 
@@ -68,8 +67,7 @@ function App() {
   const handleSkipWord = () => {
     if (state.phase === "in-game") {
       dispatch({
-        type: "update-guess",
-        newGuess: "",
+        type: "skip-guess",
         skippedWord: state.goal,
       });
       guessInputRef.current?.focus();
