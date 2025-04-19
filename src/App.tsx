@@ -78,11 +78,7 @@ function App() {
           <div className="mx-auto text-xl">
             Fruit basket loaded with {state.wordPack.length} fruits!
           </div>
-          <Button
-            handleClick={handleStartGame}
-            label="New Game"
-            autofocus={true}
-          />
+          <Button onClick={handleStartGame} label="New Game" autofocus={true} />
         </div>
       );
     }
@@ -103,9 +99,9 @@ function App() {
             />
           </label>
           <div className="space-x-5">
-            <Button handleClick={handleSkipWord} label="Skip Word" />
+            <Button onClick={handleSkipWord} label="Skip Word" />
 
-            <Button handleClick={handleEndGame} label="End Game" />
+            <Button onClick={handleEndGame} label="End Game" />
           </div>
         </div>
       );
@@ -119,7 +115,7 @@ function App() {
             {state.skippedWords} words.
           </div>
           <Button
-            handleClick={handleStartGame}
+            onClick={handleStartGame}
             label="New Game?"
             autofocus={true}
           />
