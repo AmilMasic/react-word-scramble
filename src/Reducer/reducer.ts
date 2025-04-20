@@ -62,7 +62,10 @@ export function reducer(state: State, action: Action): State {
           state.playedWords
         );
 
-        const newPlayedWords = new Set(state.playedWords);
+        let newPlayedWords = new Set(state.playedWords);
+        if (newPlayedWords.size === state.wordPack.length) {
+          newPlayedWords = new Set();
+        }
         newPlayedWords.add(goal);
         return {
           phase: "in-game",
@@ -92,8 +95,10 @@ export function reducer(state: State, action: Action): State {
         state.bannedWords,
         state.playedWords
       );
-
-      const newPlayedWords = new Set(state.playedWords);
+      let newPlayedWords = new Set(state.playedWords);
+      if (newPlayedWords.size === state.wordPack.length) {
+        newPlayedWords = new Set();
+      }
       newPlayedWords.add(goal);
 
       if (action.skippedWord === state.goal) {
