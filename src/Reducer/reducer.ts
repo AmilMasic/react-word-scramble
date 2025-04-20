@@ -5,6 +5,7 @@ export function getInitialState(): State {
     phase: "pre-game",
     wordPack: null,
     bannedWords: null,
+    playedWords: null,
   };
 }
 
@@ -32,7 +33,8 @@ export function reducer(state: State, action: Action): State {
       }
       const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
-        state.bannedWords
+        state.bannedWords,
+        new Set()
       );
 
       return {
@@ -43,6 +45,7 @@ export function reducer(state: State, action: Action): State {
         guessedWords: 0,
         skippedWords: 0,
         guess: "",
+        playedWords: new Set(),
         wordPack: state.wordPack,
         bannedWords: state.bannedWords,
       };
@@ -52,11 +55,12 @@ export function reducer(state: State, action: Action): State {
         return state;
       }
 
-      const { goal, scrambledGoal } = getRandomWord(
-        state.wordPack,
-        state.bannedWords
-      );
       if (action.newGuess === state.goal) {
+        const { goal, scrambledGoal } = getRandomWord(
+          state.wordPack,
+          state.bannedWords,
+          state.playedWords
+        );
         return {
           phase: "in-game",
           goal: goal,
@@ -65,6 +69,7 @@ export function reducer(state: State, action: Action): State {
           guessedWords: state.guessedWords + 1,
           skippedWords: state.skippedWords,
           guess: "",
+          playedWords: state.playedWords,
           wordPack: state.wordPack,
           bannedWords: state.bannedWords,
         };
@@ -81,7 +86,8 @@ export function reducer(state: State, action: Action): State {
       }
       const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
-        state.bannedWords
+        state.bannedWords,
+        state.playedWords
       );
 
       if (action.skippedWord === state.goal) {
@@ -92,6 +98,7 @@ export function reducer(state: State, action: Action): State {
           goal: goal,
           skippedWord: "",
           scrambledGoal: scrambledGoal,
+          playedWords: state.playedWords,
           guessedWords: state.guessedWords,
           skippedWords: state.skippedWords + 1,
           guess: "",
@@ -110,6 +117,7 @@ export function reducer(state: State, action: Action): State {
         phase: "post-game",
         guessedWords: state.guessedWords,
         skippedWords: state.skippedWords,
+        playedWords: state.playedWords,
         wordPack: state.wordPack,
         bannedWords: state.bannedWords,
       };

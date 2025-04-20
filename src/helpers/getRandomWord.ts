@@ -1,6 +1,7 @@
 export const getRandomWord = (
   wordPack: readonly string[],
-  bannedWords: readonly string[]
+  bannedWords: readonly string[],
+  wordSet: Set<string>
 ) => {
   const randomIndex = Math.floor(Math.random() * wordPack.length);
   const word = wordPack[randomIndex];
@@ -8,11 +9,13 @@ export const getRandomWord = (
   let isClean = false;
   let attempts = 0;
   const maxAttempts = 10;
+  let playedSet;
 
   while ((isClean || scrambledGoal === word) && attempts < maxAttempts) {
     scrambledGoal = shuffleWord(word.split("")).join("");
 
     isClean = isRandomWordClean(scrambledGoal, bannedWords);
+    playedSet = hasBeenPlayed(wordSet, word, wordPack);
 
     attempts++;
   }
@@ -20,6 +23,7 @@ export const getRandomWord = (
   return {
     goal: word,
     scrambledGoal: scrambledGoal,
+    playedWords: playedSet,
   };
 };
 
@@ -34,8 +38,16 @@ const shuffleWord = (array: string[]) => {
 
 const isRandomWordClean = (word: string, bannedWords: readonly string[]) => {
   return bannedWords.some((banned) => {
-    console.log("word", word);
-
     return word.toUpperCase().includes(banned.toUpperCase());
   });
+};
+
+const hasBeenPlayed = (
+  wordSet: Set<string>,
+  word: string,
+  wordPack: readonly string[]
+) => {
+  wordSet.add(word);
+  console.log("set", wordSet);
+  return wordSet;
 };
