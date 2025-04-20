@@ -31,10 +31,16 @@ export function reducer(state: State, action: Action): State {
       if (state.bannedWords == null) {
         return state;
       }
+      const lastWord =
+        state.phase === "post-game"
+          ? Array.from(state.playedWords).pop()
+          : undefined;
+
       const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
         state.bannedWords,
-        new Set()
+        new Set(),
+        lastWord
       );
 
       return {

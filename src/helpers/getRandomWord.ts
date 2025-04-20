@@ -1,14 +1,20 @@
 export const getRandomWord = (
   wordPack: readonly string[],
   bannedWords: readonly string[],
-  playedWords: Set<string>
+  playedWords: Set<string>,
+  lastWord?: string | undefined
 ) => {
-  const avaialbleWords = wordPack.filter((word) => !playedWords.has(word));
-  console.log("avalialbe", avaialbleWords);
-  const wordsToUse = avaialbleWords?.length > 0 ? avaialbleWords : wordPack;
+  let availableWords = wordPack.filter((word) => !playedWords.has(word));
 
-  const randomIndex = Math.floor(Math.random() * wordsToUse.length);
-  const word = wordsToUse[randomIndex];
+  if (availableWords.length === 0) {
+    playedWords.clear();
+    if (lastWord) playedWords.add(lastWord);
+    availableWords = wordPack.filter((word) => !playedWords.has(word));
+  }
+
+  const randomIndex = Math.floor(Math.random() * availableWords.length);
+  const word = availableWords[randomIndex];
+
   let scrambledGoal = word;
   let isClean = false;
   let attempts = 0;
