@@ -61,6 +61,9 @@ export function reducer(state: State, action: Action): State {
           state.bannedWords,
           state.playedWords
         );
+
+        const newPlayedWords = new Set(state.playedWords);
+        newPlayedWords.add(goal);
         return {
           phase: "in-game",
           goal: goal,
@@ -69,7 +72,7 @@ export function reducer(state: State, action: Action): State {
           guessedWords: state.guessedWords + 1,
           skippedWords: state.skippedWords,
           guess: "",
-          playedWords: state.playedWords,
+          playedWords: newPlayedWords,
           wordPack: state.wordPack,
           bannedWords: state.bannedWords,
         };
@@ -90,6 +93,9 @@ export function reducer(state: State, action: Action): State {
         state.playedWords
       );
 
+      const newPlayedWords = new Set(state.playedWords);
+      newPlayedWords.add(goal);
+
       if (action.skippedWord === state.goal) {
         return {
           phase: "in-game",
@@ -98,7 +104,7 @@ export function reducer(state: State, action: Action): State {
           goal: goal,
           skippedWord: "",
           scrambledGoal: scrambledGoal,
-          playedWords: state.playedWords,
+          playedWords: newPlayedWords,
           guessedWords: state.guessedWords,
           skippedWords: state.skippedWords + 1,
           guess: "",

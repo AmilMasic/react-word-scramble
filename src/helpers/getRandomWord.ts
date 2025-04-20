@@ -47,7 +47,8 @@ const hasBeenPlayed = (
   word: string,
   wordPack: readonly string[]
 ) => {
-  wordSet.add(word);
-  console.log("set", wordSet);
-  return wordSet;
+  const newSet = new Set(wordSet);
+  newSet.add(word);
+
+  return newSet;
 };
