@@ -3,15 +3,17 @@ export type State =
       phase: "pre-game";
       wordPack: readonly string[] | null;
       bannedWords: readonly string[] | null;
+      playedWords: Set<string> | null;
     }
   | {
       phase: "in-game";
       goal: string;
-      scrabmledGoal: string;
+      scrambledGoal: string;
       skippedWord: string;
       guessedWords: number;
       skippedWords: number;
       guess: string;
+      playedWords: Set<string>;
       wordPack: readonly string[];
       bannedWords: readonly string[];
     }
@@ -19,6 +21,7 @@ export type State =
       phase: "post-game";
       guessedWords: number;
       skippedWords: number;
+      playedWords: Set<string>;
       wordPack: readonly string[];
       bannedWords: readonly string[];
     }
@@ -27,6 +30,7 @@ export type State =
       goal: string;
       guessedWords: number;
       skippedWords: number;
+      playedWords: Set<string> | null;
       wordPack: readonly string[] | null;
       bannedWords: readonly string[] | null;
     };

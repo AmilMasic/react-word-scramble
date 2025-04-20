@@ -5,6 +5,7 @@ export function getInitialState(): State {
     phase: "pre-game",
     wordPack: null,
     bannedWords: null,
+    playedWords: null,
   };
 }
 
@@ -30,19 +31,27 @@ export function reducer(state: State, action: Action): State {
       if (state.bannedWords == null) {
         return state;
       }
-      const { goal, scrabmledGoal } = getRandomWord(
+      const lastWord =
+        state.phase === "post-game"
+          ? Array.from(state.playedWords).pop()
+          : undefined;
+
+      const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
-        state.bannedWords
+        state.bannedWords,
+        new Set(),
+        lastWord
       );
 
       return {
         phase: "in-game",
-        goal: goal,
-        scrabmledGoal: scrabmledGoal,
+        goal,
+        scrambledGoal,
         skippedWord: "",
         guessedWords: 0,
         skippedWords: 0,
         guess: "",
+        playedWords: new Set(),
         wordPack: state.wordPack,
         bannedWords: state.bannedWords,
       };
@@ -52,19 +61,27 @@ export function reducer(state: State, action: Action): State {
         return state;
       }
 
-      const { goal, scrabmledGoal } = getRandomWord(
-        state.wordPack,
-        state.bannedWords
-      );
       if (action.newGuess === state.goal) {
+        const { goal, scrambledGoal } = getRandomWord(
+          state.wordPack,
+          state.bannedWords,
+          state.playedWords
+        );
+
+        let newPlayedWords = new Set(state.playedWords);
+        if (newPlayedWords.size === state.wordPack.length) {
+          newPlayedWords = new Set();
+        }
+        newPlayedWords.add(goal);
         return {
           phase: "in-game",
           goal: goal,
           skippedWord: "",
-          scrabmledGoal: scrabmledGoal,
+          scrambledGoal: scrambledGoal,
           guessedWords: state.guessedWords + 1,
           skippedWords: state.skippedWords,
           guess: "",
+          playedWords: newPlayedWords,
           wordPack: state.wordPack,
           bannedWords: state.bannedWords,
         };
@@ -79,10 +96,16 @@ export function reducer(state: State, action: Action): State {
       if (state.phase !== "in-game") {
         return state;
       }
-      const { goal, scrabmledGoal } = getRandomWord(
+      const { goal, scrambledGoal } = getRandomWord(
         state.wordPack,
-        state.bannedWords
+        state.bannedWords,
+        state.playedWords
       );
+      let newPlayedWords = new Set(state.playedWords);
+      if (newPlayedWords.size === state.wordPack.length) {
+        newPlayedWords = new Set();
+      }
+      newPlayedWords.add(goal);
 
       if (action.skippedWord === state.goal) {
         return {
@@ -91,7 +114,8 @@ export function reducer(state: State, action: Action): State {
           bannedWords: state.bannedWords,
           goal: goal,
           skippedWord: "",
-          scrabmledGoal: scrabmledGoal,
+          scrambledGoal: scrambledGoal,
+          playedWords: newPlayedWords,
           guessedWords: state.guessedWords,
           skippedWords: state.skippedWords + 1,
           guess: "",
@@ -110,6 +134,7 @@ export function reducer(state: State, action: Action): State {
         phase: "post-game",
         guessedWords: state.guessedWords,
         skippedWords: state.skippedWords,
+        playedWords: state.playedWords,
         wordPack: state.wordPack,
         bannedWords: state.bannedWords,
       };
