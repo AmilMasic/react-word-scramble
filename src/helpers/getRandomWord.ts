@@ -5,14 +5,14 @@ export const getRandomWord = (
   const randomIndex = Math.floor(Math.random() * wordPack.length);
   const word = wordPack[randomIndex];
   let scrambledGoal = word;
-  let isSafe = false;
+  let isClean = false;
   let attempts = 0;
   const maxAttempts = 10;
 
-  while ((isSafe || scrambledGoal === word) && attempts < maxAttempts) {
+  while ((isClean || scrambledGoal === word) && attempts < maxAttempts) {
     scrambledGoal = shuffleWord(word.split("")).join("");
 
-    isSafe = isRandomWordClean(scrambledGoal, bannedWords);
+    isClean = isRandomWordClean(scrambledGoal, bannedWords);
 
     attempts++;
   }
