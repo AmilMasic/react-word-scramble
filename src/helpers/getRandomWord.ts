@@ -34,7 +34,7 @@ export const getRandomWord = (
   };
 };
 
-const shuffleWord = (array: string[]) => {
+const shuffleWord = (array: readonly string[]) => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
