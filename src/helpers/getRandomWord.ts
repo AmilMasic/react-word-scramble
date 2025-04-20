@@ -1,11 +1,3 @@
-const shuffleWord = (array: string[]) => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-};
 export const getRandomWord = (
   wordPack: readonly string[],
   bannedWords: readonly string[]
@@ -17,13 +9,10 @@ export const getRandomWord = (
   let attempts = 0;
   const maxAttempts = 10;
 
-  while ((!isSafe || scrambledGoal === word) && attempts < maxAttempts) {
+  while ((isSafe || scrambledGoal === word) && attempts < maxAttempts) {
     scrambledGoal = shuffleWord(word.split("")).join("");
 
-    // eslint-disable-next-line no-loop-func
-    isSafe = !bannedWords.some((banned) =>
-      scrambledGoal.toUpperCase().includes(banned.toUpperCase())
-    );
+    isSafe = isRandomWordClean(scrambledGoal, bannedWords);
 
     attempts++;
   }
@@ -32,4 +21,21 @@ export const getRandomWord = (
     goal: word,
     scrambledGoal: scrambledGoal,
   };
+};
+
+const shuffleWord = (array: string[]) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
+const isRandomWordClean = (word: string, bannedWords: readonly string[]) => {
+  return bannedWords.some((banned) => {
+    console.log("word", word);
+
+    return word.toUpperCase().includes(banned.toUpperCase());
+  });
 };
