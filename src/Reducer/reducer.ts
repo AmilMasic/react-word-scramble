@@ -46,7 +46,7 @@ export function reducer(state: State, action: Action): State {
       return {
         phase: "in-game",
         goal: goal,
-        scrambledGoal: scrambledGoal,
+        scrambledGoal,
         skippedWord: "",
         guessedWords: 0,
         skippedWords: 0,
