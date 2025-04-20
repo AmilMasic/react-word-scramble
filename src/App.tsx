@@ -1,41 +1,17 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useReducer, useRef } from "react";
 import "./App.css";
 
 import { reducer, getInitialState } from "./Reducer/reducer";
 import Button from "./Button";
+import useLoadData from "./hooks/useLoadData";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState);
 
   const guessInputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    Promise.all([
-      fetch("https://unpkg.com/naughty-words@1.2.0/en.json").then((res) =>
-        res.json()
-      ),
-      fetch("fruits.txt").then((res) => res.text()),
-    ]).then(([bannedWordsData, fruitsText]) => {
-      const normalizeWords = (words: unknown[]): string[] =>
-        words
-          .filter((word): word is string => typeof word === "string")
-          .map((word) => word.toUpperCase().trim())
-          .filter(Boolean);
+  useLoadData({ dispatch });
 
-      const normalizedBannedWords = Array.isArray(bannedWordsData)
-        ? normalizeWords(bannedWordsData)
-        : normalizeWords(Object.values(bannedWordsData).flat());
-
-      dispatch({
-        type: "load-data",
-        wordPack: fruitsText
-          .split("\n")
-          .map((word) => word.toUpperCase().trim())
-          .filter(Boolean),
-        bannedWords: normalizedBannedWords,
-      });
-    });
-  }, []);
   const handleStartGame = () => {
     dispatch({ type: "start-game" });
   };
