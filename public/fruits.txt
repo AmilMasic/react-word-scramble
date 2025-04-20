@@ -2,3 +2,39 @@ Apple
 Banana
 Orange
 Mango
+Pineapple
+Strawberry
+Grape
+Watermelon
+Kiwi
+Peach
+Pear
+Cherry
+Blueberry
+Raspberry
+Blackberry
+Lemon
+Lime
+Avocado
+Papaya
+Plum
+Coconut
+Pomegranate
+Fig
+Grapefruit
+Melon
+Apricot
+Persimmon
+Guava
+Passion fruit
+Dragon fruit
+Lychee
+Cranberry
+Tangerine
+Jackfruit
+Mulberry
+Durian
+Star fruit
+Rambutan
+Longan
+Mangosteen
