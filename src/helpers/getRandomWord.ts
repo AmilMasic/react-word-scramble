@@ -1,4 +1,4 @@
-const shuffleArray = (array: string[]) => {
+const shuffleWord = (array: string[]) => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -18,7 +18,7 @@ export const getRandomWord = (
   const maxAttempts = 10;
 
   while ((!isSafe || scrambledGoal === word) && attempts < maxAttempts) {
-    scrambledGoal = shuffleArray(word.split("")).join("");
+    scrambledGoal = shuffleWord(word.split("")).join("");
 
     // eslint-disable-next-line no-loop-func
     isSafe = !bannedWords.some((banned) =>
